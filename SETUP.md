@@ -128,6 +128,42 @@ Open the URL Vite prints (usually **http://localhost:5173**).
 4. Try meal search (requires valid Spoonacular key).
 5. Create a reminder (Socket.IO notifications use `http://localhost:7001`).
 
+## 6. Seed demo data (recommended for testing)
+
+Use this when you want a ready-made dataset for full-system demo/testing (Home, Fitness, Nutrition, Reminders, Performance).
+
+### Step-by-step
+
+1. Make sure `backend/.env` is configured (especially `MONGODB_CONNECTION_STRING` and `JWT_SECRET_KEY`).
+2. From project root, run:
+
+```bash
+cd backend
+npm run seed:demo
+```
+
+3. Wait for output similar to:
+   - `Demo seed completed.`
+   - `Seeded days: 540`
+4. Start/restart backend and frontend dev servers after seeding.
+5. Sign in with seeded users below.
+
+### Seeded test accounts
+
+- `user1@fitpal.com` / `Password123!`  
+  Active account with rich data for charts and feature testing.
+- `user2@fitpal.com` / `Password123!`  
+  Starts **deactivated** for login/reactivation flow testing.
+
+### Seed behavior notes
+
+- The script reseeds data for these demo users each run, so results are deterministic.
+- For `user1`, it generates:
+  - profile + goals + favourites
+  - 540 days of exercise logs and food diary records
+  - reminders and notifications
+- For `user2`, it ensures the account exists and remains deactivated.
+
 ## Team workflow summary
 
 | Topic | Recommendation |
