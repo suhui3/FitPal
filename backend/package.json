@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --env-file=.env",
     "seed:demo": "node --env-file=.env ./src/scripts/seedDemoData.js",
+    "seed:partial-user": "node --env-file=.env ./src/scripts/addPartialProfileUser.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

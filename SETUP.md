@@ -154,15 +154,29 @@ npm run seed:demo
   Active account with rich data for charts and feature testing.
 - `user2@fitpal.com` / `Password123!`  
   Starts **deactivated** for login/reactivation flow testing.
+- `user3@fitpal.com` / `Password123!`  
+  Active account with a **partial profile** — basic info (name, gender, DOB) but no profile picture, physical info, or goals. Use for incomplete-onboarding and missing-avatar testing.
+
+### Add partial-profile user (keeps existing data)
+
+To add `user3` without reseeding or overwriting other users:
+
+```bash
+cd backend
+npm run seed:partial-user
+```
+
+The script is idempotent: if `user3@fitpal.com` already exists, it makes no changes.
 
 ### Seed behavior notes
 
-- The script reseeds data for these demo users each run, so results are deterministic.
+- `seed:demo` reseeds data for `user1` and `user2` each run, so results are deterministic.
 - For `user1`, it generates:
   - profile + goals + favourites
   - 540 days of exercise logs and food diary records
   - reminders and notifications
 - For `user2`, it ensures the account exists and remains deactivated.
+- `seed:partial-user` only creates `user3` if missing; it does not modify other users or their data.
 
 ## Team workflow summary
 
