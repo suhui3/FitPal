@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 FITNESS_PAGE_TITLE = "Fitness Tracker"
 LOG_EXERCISE_TITLE = "Log Exercise"
 WORKOUT_NAME = "Bench Press"
+CARDIO_NAME = "Walking, 2mph"
 WORKOUT_DATE = "2026-06-05"
 WORKOUT_TIME = "09:00"
 WORKOUT_SETS = "4"
@@ -42,6 +43,14 @@ def _workout_inputs(driver):
         "time": driver.find_element(By.CSS_SELECTOR, ".modal-content input[type='time']"),
         "sets": driver.find_elements(By.CSS_SELECTOR, ".modal-content input[type='number']")[0],
         "reps": driver.find_elements(By.CSS_SELECTOR, ".modal-content input[type='number']")[1],
+    }
+
+
+def _cardio_inputs(driver):
+    return {
+        "date": driver.find_element(By.CSS_SELECTOR, ".modal-content input[type='date']"),
+        "time": driver.find_element(By.CSS_SELECTOR, ".modal-content input[type='time']"),
+        "duration": driver.find_element(By.CSS_SELECTOR, ".modal-content input[type='number']"),
     }
 
 
@@ -89,6 +98,48 @@ class TestTC10001:
             print("PASS: TC-10-001 - Workout activity logged successfully.")
         else:
             print("FAIL: TC-10-001 - Workout activity was not logged successfully.")
+
+
+class TestTC10002:
+    def test_tc10_002_invalid_activity_details_show_error(self, logged_in, wait):
+        """TC-10-002: Invalid activity details are rejected by the logging form."""
+        driver = logged_in
+
+        logger.info("Step 1: Navigate to the Fitness page")
+        _open_fitness_page(driver, wait)
+
+        logger.info("Step 2: Click Walking, 2mph cardio exercise item")
+        _click_exercise(driver, wait, CARDIO_NAME)
+
+        logger.info("Step 3: Verify logging modal is displayed")
+        wait.until(lambda d: _modal_visible(d))
+
+        logger.info("Step 4: Fill invalid activity details - Duration: -10")
+        inputs = _cardio_inputs(driver)
+        inputs["date"].send_keys(WORKOUT_DATE)
+        inputs["time"].send_keys(WORKOUT_TIME)
+        inputs["duration"].send_keys("-10")
+
+        logger.info("Step 5: Click Save button")
+        driver.find_element(By.XPATH, "//button[normalize-space()='Save']").click()
+
+        logger.info("Step 6: Verify invalid details are not accepted")
+        invalid_rejected = _modal_visible(driver)
+
+        assume(
+            invalid_rejected,
+            "Expected invalid activity duration to be rejected and modal to remain open.",
+        )
+        log_result(
+            "TC-10-002",
+            "PASS" if invalid_rejected else "FAIL",
+            f"Invalid rejected: {invalid_rejected}",
+        )
+
+        if invalid_rejected:
+            print("PASS: TC-10-002 - Invalid activity details were rejected.")
+        else:
+            print("FAIL: TC-10-002 - Invalid activity details were accepted. TIR-10-001 raised.")
 
 
 class TestTC10003:
