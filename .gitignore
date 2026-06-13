@@ -1,0 +1,38 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Environment & secrets (keep .env.example templates)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# IDE / editor
+.idea/
+.vscode/
+!.vscode/extensions.json

@@ -1,0 +1,30 @@
+# Local environment & secrets
+.env
+.env.local
+
+# Virtual environment
+.venv/
+venv/
+
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Test / coverage artifacts
+.coverage
+htmlcov/
+*.egg-info/
+
+# OS
+.DS_Store
+
+# Selenium / WebDriver local caches (if created in-project)
+.wdm/
+chromedriver
+chromedriver.exe
+geckodriver
+geckodriver.exe
