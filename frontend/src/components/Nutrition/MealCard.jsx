@@ -1,11 +1,12 @@
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Heart, HeartFill } from "react-bootstrap-icons";
-import { useDeleteMealFromFavourite } from "../../api/MealApi";
+import { useAddMealToFavourite, useDeleteMealFromFavourite } from "../../api/MealApi";
 
 const MealCard = ({ meal, handleShowAddDiary, isFavourite = false }) => {
   const navigate = useNavigate();
-  const { deleteMealFromFavourite, isPending } = useDeleteMealFromFavourite();
+  const { deleteMealFromFavourite } = useDeleteMealFromFavourite();
+  const { addMealToFavourite } = useAddMealToFavourite();
   return (
     <Card style={{ width: "100%" }}>
       <Card.Img
@@ -24,7 +25,10 @@ const MealCard = ({ meal, handleShowAddDiary, isFavourite = false }) => {
               color="red"
             />
           ) : (
-            <Heart />
+            <Heart
+              style={{ cursor: "pointer" }}
+              onClick={() => addMealToFavourite({ mealId: meal.mealId, foodName: meal.foodName, imageUrl: meal.imageUrl })}
+            />
           )}
         </Card.Title>
         <div className="d-flex justify-content-center mt-4">

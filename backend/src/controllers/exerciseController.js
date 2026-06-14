@@ -11,7 +11,7 @@ export const createExercise = async (req, res) => {
 
   try {
     const user = await User.findById(userId);
-    const weight = user?.weight;
+    const weight = user?.weight || 0;
 
     const processedCardio = cardio.map((item) => {
       const exerciseMeta = exerciseList.find(

@@ -17,7 +17,7 @@ const registerMyUser = async (req, res) => {
     user = new User(req.body);
     await user.save();
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
     res.cookie("auth_token", token, {
@@ -45,9 +45,10 @@ const registerMyUserProfile = async (req, res) => {
     }
 
     const imageFile = req.file;
-    const imageUrl = await uploadImagesToCloudinary(imageFile);
-    user.profilePictureUrl = imageUrl;
-    console.log("Received profile data:", user.profilePictureUrl);
+    if (imageFile) {
+      const imageUrl = await uploadImagesToCloudinary(imageFile);
+      user.profilePictureUrl = imageUrl;
+    }
     await user.save();
     res.status(200).json(user);
   } catch (error) {
@@ -203,7 +204,7 @@ const reactivateMyAccount = async (req, res) => {
     user.deactivated = false;
     await user.save();
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
