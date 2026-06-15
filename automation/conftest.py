@@ -42,6 +42,19 @@ def get_user_goals(driver, api_base_url: str) -> dict:
     return response.json()
 
 
+def get_user_exercises(driver, api_base_url: str) -> list:
+    """Fetch exercise logs via API using the browser session cookies."""
+    cookies = {c["name"]: c["value"] for c in driver.get_cookies()}
+    response = requests.get(
+        f"{api_base_url.rstrip('/')}/api/exercises",
+        cookies=cookies,
+        timeout=10,
+    )
+    response.raise_for_status()
+    data = response.json()
+    return data if isinstance(data, list) else []
+
+
 @pytest.fixture(scope="session")
 def base_url():
     return os.getenv("FITPAL_BASE_URL", "http://localhost:5173").rstrip("/")
@@ -94,6 +107,14 @@ def fitness_page(logged_in_driver, base_url):
 def fetch_user_goals(api_base_url):
     def _fetch(driver):
         return get_user_goals(driver, api_base_url)
+
+    return _fetch
+
+
+@pytest.fixture
+def fetch_user_exercises(api_base_url):
+    def _fetch(driver):
+        return get_user_exercises(driver, api_base_url)
 
     return _fetch
 
